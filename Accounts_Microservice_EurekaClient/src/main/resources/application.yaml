@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: Accounts-MS
+  devtools:
+    restart:
+      enabled: true
+      
+      
+# eureka client configuration
+server:
+  port: ${PORT:0}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true # configuration for automatic mapping
+    hostname: localhost # configuration for automatic mapping
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

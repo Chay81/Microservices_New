@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: API-Gateway
+  devtools:
+    restart:
+      enabled: true
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # configuration for automatic mapping
+          lower-case-service-id: true # configuration for automatic mapping
+          routes:
+            - id: users-ms-login
+              uri: lb://users-ms
+              predicates[0]:
+                - Path=/users-ms/login
+              predicates[1]:
+                - Method=POST  
+              filters[0]:
+                - RemoveRequestHeader=Cookie
+              filters[1]:
+                - RewritePath=/users-ms/(?<segment>/?.*), /$\{segment}  
+
+    
+    
+server:
+  port: 8765
+  
+#eureka client configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance: 
+    prefer-ip-address: true # configuration for automatic mapping
+
+# use api in lower case for automatic mapping
+#eg localhost:8765/accounts-ms/accounts/status      
